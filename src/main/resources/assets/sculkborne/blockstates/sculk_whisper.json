@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "sculkborne:block/sculk_whisper"
+    }
+  }
+}

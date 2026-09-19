@@ -1,0 +1,10 @@
+{
+  "tinnitus": {
+    "sounds": [
+      {
+        "name": "sculkborne:tinnitus",
+        "stream": false
+      }
+    ]
+  }
+}

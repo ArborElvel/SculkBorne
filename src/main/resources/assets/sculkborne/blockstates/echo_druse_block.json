@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "growth_stage=1": {
+      "model": "sculkborne:block/echo_druse_stage1"
+    },
+    "growth_stage=2": {
+      "model": "sculkborne:block/echo_druse_stage2"
+    },
+    "growth_stage=3": {
+      "model": "sculkborne:block/echo_druse_stage3"
+    },
+    "growth_stage=4": {
+      "model": "sculkborne:block/echo_druse_stage4"
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+	"format_version": "1.21.110",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.whisp_druse",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3,
+				"visible_bounds_offset": [0, 0.5, 0]
+			},
+			"bones": [
+				{
+					"name": "druse2",
+					"pivot": [0, -3, 0],
+					"cubes": [
+						{
+							"origin": [-4, -9, -3],
+							"size": [4, 11, 4],
+							"uv": {
+								"north": {"uv": [0, 0], "uv_size": [4, 11]},
+								"east": {"uv": [4, 0], "uv_size": [4, 11]},
+								"south": {"uv": [8, 0], "uv_size": [4, 11]},
+								"west": {"uv": [0, 9], "uv_size": [4, 11]},
+								"up": {"uv": [16, 0], "uv_size": [4, 4]},
+								"down": {"uv": [12, 18], "uv_size": [4, -4]}
+							}
+						},
+						{
+							"origin": [-1, -8, -1],
+							"size": [4, 9, 4],
+							"uv": {
+								"north": {"uv": [4, 9], "uv_size": [4, 9]},
+								"east": {"uv": [8, 8], "uv_size": [4, 9]},
+								"south": {"uv": [12, 0], "uv_size": [4, 9]},
+								"west": {"uv": [12, 7], "uv_size": [4, 9]},
+								"up": {"uv": [4, 16], "uv_size": [4, 4]},
+								"down": {"uv": [16, 8], "uv_size": [4, -4]}
+							}
+						},
+						{
+							"origin": [-3, -8, 1],
+							"size": [3, 7, 3],
+							"uv": {
+								"north": {"uv": [8, 14], "uv_size": [3, 7]},
+								"east": {"uv": [16, 6], "uv_size": [3, 7]},
+								"south": {"uv": [16, 11], "uv_size": [3, 7]},
+								"west": {"uv": [0, 16], "uv_size": [3, 7]},
+								"up": {"uv": [19, 13], "uv_size": [3, 3]},
+								"down": {"uv": [20, 3], "uv_size": [3, -3]}
+							}
+						},
+						{
+							"origin": [-1, -8, -4],
+							"size": [3, 7, 3],
+							"uv": {
+								"north": {"uv": [11, 17], "uv_size": [3, 7]},
+								"east": {"uv": [14, 18], "uv_size": [3, 7]},
+								"south": {"uv": [17, 18], "uv_size": [3, 7]},
+								"west": {"uv": [19, 9], "uv_size": [3, 7]},
+								"up": {"uv": [3, 20], "uv_size": [3, 3]},
+								"down": {"uv": [20, 6], "uv_size": [3, -3]}
+							}
+						}
+					]
+				},
+				{
+					"name": "druse",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-0.5, -7.5, -0.5],
+							"size": [3, 8, 3],
+							"uv": {
+								"north": {"uv": [0, 14], "uv_size": [3, 8]},
+								"east": {"uv": [0, 14], "uv_size": [3, 8]},
+								"south": {"uv": [0, 14], "uv_size": [3, 8]},
+								"west": {"uv": [0, 14], "uv_size": [3, 8]},
+								"up": {"uv": [3, 14], "uv_size": [-3, -3]},
+								"down": {"uv": [3, 14], "uv_size": [-3, -3]}
+							}
+						},
+						{
+							"origin": [-3.5, -8.5, -2.5],
+							"size": [3, 10, 3],
+							"uv": {
+								"north": {"uv": [0, 13], "uv_size": [3, 10]},
+								"east": {"uv": [0, 13], "uv_size": [3, 10]},
+								"south": {"uv": [0, 13], "uv_size": [3, 10]},
+								"west": {"uv": [0, 13], "uv_size": [3, 10]},
+								"up": {"uv": [3, 21], "uv_size": [-3, -3]},
+								"down": {"uv": [3, 21], "uv_size": [-3, -3]}
+							}
+						}
+					]
+				},
+				{
+					"name": "whisper",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-5, -9, -5],
+							"size": [9, 11, 10],
+							"uv": {
+								"north": {"uv": [29, 42], "uv_size": [9, 11]},
+								"east": {"uv": [19, 42], "uv_size": [10, 11]},
+								"south": {"uv": [10, 42], "uv_size": [9, 11]},
+								"west": {"uv": [0, 42], "uv_size": [10, 11]}
+							}
+						},
+						{
+							"origin": [-6, -9, -6],
+							"size": [11, 11, 12],
+							"uv": {
+								"north": {"uv": [29, 53], "uv_size": [9, 11]},
+								"east": {"uv": [19, 53], "uv_size": [10, 11]},
+								"south": {"uv": [10, 53], "uv_size": [9, 11]},
+								"west": {"uv": [0, 53], "uv_size": [10, 11]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

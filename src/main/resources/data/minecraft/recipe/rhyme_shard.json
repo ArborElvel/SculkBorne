@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{"item": "minecraft:echo_shard"},{"item": "minecraft:dragon_breath"}],
+  "result": {
+    "id": "sculkborne:rhyme_shard",
+    "count": 1
+  }
+}

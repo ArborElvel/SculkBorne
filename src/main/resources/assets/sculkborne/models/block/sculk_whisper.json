@@ -1,0 +1,11 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "2": "sculkborne:block/sculk_whisper",
+    "particle": "sculkborne:block/sculk_whisper"
+  },
+  "texture_size": [
+    32,
+    32
+  ]
+}

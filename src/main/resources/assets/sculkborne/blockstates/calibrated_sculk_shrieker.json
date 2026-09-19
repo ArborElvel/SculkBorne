@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "sculkborne:block/calibrated_sculk_shrieker"
+    },
+    "facing=south": {
+      "model": "sculkborne:block/calibrated_sculk_shrieker"
+    },
+    "facing=east": {
+      "model": "sculkborne:block/calibrated_sculk_shrieker"
+    },
+    "facing=west": {
+      "model": "sculkborne:block/calibrated_sculk_shrieker"
+    },
+    "facing=up": {
+      "model": "sculkborne:block/calibrated_sculk_shrieker"
+    },
+    "facing=down": {
+      "model": "sculkborne:block/calibrated_sculk_shrieker"
+    }
+  }
+}

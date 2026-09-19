@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "package": "com.unddefined.sculkborne.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "CatalystListenerMixin",
+    "EntityMixin",
+    "SculkBlockMixin",
+    "SculkPatchFeatureMixin",
+    "WardenMixin"
+  ],
+  "client": [
+    "FogDataAccessor",
+    "FogRendererMixin",
+    "IrisDarknessFactorMixin",
+    "MixinPlayerRenderer"
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

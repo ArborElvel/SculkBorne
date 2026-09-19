@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{"item": "sculkborne:echo_druse"}],
+  "result": {
+    "id": "minecraft:echo_shard",
+    "count": 3
+  }
+}

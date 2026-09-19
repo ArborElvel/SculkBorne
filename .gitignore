@@ -1,0 +1,33 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+app
+runs
+run-data
+source_codes
+repo
+
+
+/run/
+*.log
+/run-server/
+/run-client-2/
+/AGENTS.md

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sculkborne:item/sculk_skeleton_spawn_egg"
+  },
+  "render_type": "minecraft:cutout"
+}
