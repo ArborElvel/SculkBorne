@@ -1,5 +1,6 @@
 package com.unddefined.sculkborne.server.registry;
 
+import com.unddefined.sculkborne.compat.enderechoing.EnderEchoingTabIntegration;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -45,5 +46,6 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.SCULK_SKELETON_SPAWN_EGG.get());
                         output.accept(ItemRegistry.SCULVERFISH_SPAWN_EGG.get());
                         output.accept(Items.WARDEN_SPAWN_EGG);
+                        EnderEchoingTabIntegration.addItems(output);
                     }).build());
 }
