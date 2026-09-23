@@ -1,6 +1,7 @@
 package com.unddefined.sculkborne.server.registry;
 
 import com.unddefined.sculkborne.entities.CreesperEntity;
+import com.unddefined.sculkborne.entities.SculkShadeEntity;
 import com.unddefined.sculkborne.entities.SculkSkeletonEntity;
 import com.unddefined.sculkborne.entities.SculkSpreaderEntity;
 import com.unddefined.sculkborne.entities.SculkZombieEntity;
@@ -36,4 +37,8 @@ public class EntityRegistry {
     public static final DeferredHolder<EntityType<?>, EntityType<SculverfishEntity>> SCULVERFISH_ENTITY =
             ENTITIES.register("sculverfish_entity", () -> EntityType.Builder.of(SculverfishEntity::new, MobCategory.MONSTER)
                     .sized(1.0F, 0.5F).clientTrackingRange(8).build("sculverfish_entity"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SculkShadeEntity>> SCULK_SHADE_ENTITY =
+            ENTITIES.register("sculk_shade_entity", () -> EntityType.Builder.of(SculkShadeEntity::new, MobCategory.MONSTER)
+                    .fireImmune().sized(0.4F, 0.8F).eyeHeight(0.51875F).clientTrackingRange(8).build("sculk_shade_entity"));
 }

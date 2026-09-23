@@ -31,6 +31,12 @@
       "weight": 20,
       "minCount": 1,
       "maxCount": 2
+    },
+    {
+      "type": "sculkborne:sculk_shade_entity",
+      "weight": 20,
+      "minCount": 1,
+      "maxCount": 2
     }
   ]
 }

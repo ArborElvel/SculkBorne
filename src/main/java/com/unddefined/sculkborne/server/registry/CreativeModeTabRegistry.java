@@ -45,6 +45,7 @@ public class CreativeModeTabRegistry {
                         output.accept(ItemRegistry.CREESPER_SPAWN_EGG.get());
                         output.accept(ItemRegistry.SCULK_SKELETON_SPAWN_EGG.get());
                         output.accept(ItemRegistry.SCULVERFISH_SPAWN_EGG.get());
+                        output.accept(ItemRegistry.SCULK_SHADE_SPAWN_EGG.get());
                         output.accept(Items.WARDEN_SPAWN_EGG);
                         EnderEchoingTabIntegration.addItems(output);
                     }).build());

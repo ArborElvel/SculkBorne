@@ -3,6 +3,7 @@ package com.unddefined.sculkborne;
 import com.mojang.logging.LogUtils;
 import com.unddefined.sculkborne.client.ModSoundEvents;
 import com.unddefined.sculkborne.entities.CreesperEntity;
+import com.unddefined.sculkborne.entities.SculkShadeEntity;
 import com.unddefined.sculkborne.entities.SculkSkeletonEntity;
 import com.unddefined.sculkborne.entities.SculkSpreaderEntity;
 import com.unddefined.sculkborne.entities.SculkZombieEntity;
@@ -54,5 +55,6 @@ public class SculkBorne {
         event.put(EntityRegistry.CREESPER_ENTITY.get(), CreesperEntity.createAttributes().build());
         event.put(EntityRegistry.SCULK_SKELETON_ENTITY.get(), SculkSkeletonEntity.createAttributes().build());
         event.put(EntityRegistry.SCULVERFISH_ENTITY.get(), SculverfishEntity.createAttributes().build());
+        event.put(EntityRegistry.SCULK_SHADE_ENTITY.get(), SculkShadeEntity.createAttributes().build());
     }
 }
