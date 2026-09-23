@@ -22,7 +22,7 @@ public class SculkVeilEffect extends MobEffect {
     private static final long DARKNESS_LINE = 20 * 60 * 3;
 
     public SculkVeilEffect() {
-        super(MobEffectCategory.BENEFICIAL, 0x4215441);
+        super(MobEffectCategory.NEUTRAL, 0x4215441);
     }
 
     @Override

@@ -36,7 +36,7 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 public class SculkMobSpawnPlacements {
 
     /** 附近没有幽匿系方块时的生成概率。 */
-    public static final float SPAWN_CHANCE = 0.55F;
+    public static final float SPAWN_CHANCE = 0.45F;
 
     /** 附近有幽匿系方块时的生成概率。 */
     public static final float SPAWN_CHANCE_NEAR_SCULK = 1.5F;
