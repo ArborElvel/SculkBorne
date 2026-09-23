@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PAP",
+    "APA",
+    "PAP"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:experience_bottle"
+    },
+    "P": {
+      "item": "minecraft:echo_shard"
+    }
+  },
+  "result": {
+    "id": "sculkborne:echo_druse",
+    "count": 1
+  }
+}
