@@ -79,7 +79,7 @@ public interface SculkMob {
     int SCULK_HEAL_BASE_INTERVAL = 80;
 
     /** 死亡时原地触发一次幽匿催发体效果的概率。 */
-    float SCULK_BLOOM_CHANCE = 0.3F;
+    float SCULK_BLOOM_CHANCE = 0.2F;
 
     /** 死亡时触发绽放的最低电荷，生物自身的死亡经验更高时按经验计算。 */
     int SCULK_BLOOM_MIN_CHARGE = 5;
