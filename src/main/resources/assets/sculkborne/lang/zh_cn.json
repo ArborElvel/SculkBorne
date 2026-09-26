@@ -42,5 +42,8 @@
   "item.minecraft.potion.effect.sculk_intrusion": "幽匿侵扰药水",
   "item.minecraft.splash_potion.effect.sculk_intrusion": "喷溅型幽匿侵扰药水",
   "item.minecraft.lingering_potion.effect.sculk_intrusion": "滞留型幽匿侵扰药水",
+  "item.minecraft.potion.effect.glowing": "发光药水",
+  "item.minecraft.splash_potion.effect.glowing": "喷溅型发光药水",
+  "item.minecraft.lingering_potion.effect.glowing": "滞留型发光药水",
   "creativetab.sculkborne": "幽匿拓展"
 }

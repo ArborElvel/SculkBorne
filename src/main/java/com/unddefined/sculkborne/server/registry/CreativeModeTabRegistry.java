@@ -40,6 +40,9 @@ public class CreativeModeTabRegistry {
                         output.accept(PotionContents.createItemStack(Items.POTION, PotionRegistry.SCULK_INTRUSION));
                         output.accept(PotionContents.createItemStack(Items.SPLASH_POTION, PotionRegistry.SCULK_INTRUSION));
                         output.accept(PotionContents.createItemStack(Items.LINGERING_POTION, PotionRegistry.SCULK_INTRUSION));
+                        output.accept(PotionContents.createItemStack(Items.POTION, PotionRegistry.GLOWING));
+                        output.accept(PotionContents.createItemStack(Items.SPLASH_POTION, PotionRegistry.GLOWING));
+                        output.accept(PotionContents.createItemStack(Items.LINGERING_POTION, PotionRegistry.GLOWING));
                         output.accept(ItemRegistry.SCULK_SPREADER_SPAWN_EGG.get());
                         output.accept(ItemRegistry.SCULK_ZOMBIE_SPAWN_EGG.get());
                         output.accept(ItemRegistry.CREESPER_SPAWN_EGG.get());

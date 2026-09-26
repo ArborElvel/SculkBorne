@@ -42,5 +42,8 @@
   "item.minecraft.potion.effect.sculk_intrusion": "Potion of Sculk Intrusion",
   "item.minecraft.splash_potion.effect.sculk_intrusion": "Splash Potion of Sculk Intrusion",
   "item.minecraft.lingering_potion.effect.sculk_intrusion": "Lingering Potion of Sculk Intrusion",
+  "item.minecraft.potion.effect.glowing": "Potion of Glowing",
+  "item.minecraft.splash_potion.effect.glowing": "Splash Potion of Glowing",
+  "item.minecraft.lingering_potion.effect.glowing": "Lingering Potion of Glowing",
   "creativetab.sculkborne": "Sculkborne"
 }

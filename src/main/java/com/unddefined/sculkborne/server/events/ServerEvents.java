@@ -71,6 +71,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
         event.getBuilder().addMix(Potions.AWKWARD, Items.SCULK_VEIN, PotionRegistry.SCULK_INTRUSION);
+        event.getBuilder().addMix(Potions.AWKWARD, Items.GLOW_BERRIES, PotionRegistry.GLOWING);
     }
 
     @SubscribeEvent
