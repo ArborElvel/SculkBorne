@@ -66,7 +66,13 @@ public class SculkIntrusionSpreader {
 
     /** ENTITY_DIE 命中主体作用盒：把死亡经验转为 cursor 电荷，并模仿催发体绽放 */
     public void absorbEntityDeath(ServerLevel level, LivingEntity owner, Vec3 deathPos, int xp) {
-        spreader.addCursors(SculkBloom.bloomOrigin(deathPos), xp);
+        absorbExperience(level, owner, deathPos, xp);
+    }
+
+    /** 把主体自身经验转为 cursor 电荷，并模仿催发体绽放 */
+    public void absorbExperience(ServerLevel level, LivingEntity owner, Vec3 pos, int xp) {
+        if (xp <= 0) return;
+        spreader.addCursors(SculkBloom.bloomOrigin(pos), xp);
         SculkBloom.playBloomEffects(level, owner.blockPosition());
     }
 

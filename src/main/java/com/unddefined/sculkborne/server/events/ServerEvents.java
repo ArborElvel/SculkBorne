@@ -2,6 +2,7 @@ package com.unddefined.sculkborne.server.events;
 
 import com.unddefined.sculkborne.SculkBorne;
 import com.unddefined.sculkborne.effects.AttackScatteredEffect;
+import com.unddefined.sculkborne.effects.SculkIntrusionEffect;
 import com.unddefined.sculkborne.effects.StaggerEffect;
 import com.unddefined.sculkborne.effects.TinnitusEffect;
 import com.unddefined.sculkborne.entities.CreesperEntity;
@@ -238,10 +239,15 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onLivingAttack(LivingIncomingDamageEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!entity.hasEffect(ATTACK_SCATTERED)) return;
-        MobEffectInstance effect = entity.getEffect(ATTACK_SCATTERED);
-        if (effect == null) return;
-        RandomSource random = entity.getRandom();
-        if (random.nextFloat() < 0.3F * (effect.getAmplifier() + 1)) event.setCanceled(true);
+        if (entity.hasEffect(ATTACK_SCATTERED)) {
+            MobEffectInstance effect = entity.getEffect(ATTACK_SCATTERED);
+            if (effect != null) {
+                RandomSource random = entity.getRandom();
+                if (random.nextFloat() < 0.3F * (effect.getAmplifier() + 1)) event.setCanceled(true);
+            }
+        }
+
+        if (!event.isCanceled() && entity instanceof ServerPlayer player)
+            SculkIntrusionEffect.tryTriggerSpreaderOnHurt(player);
     }
 }
