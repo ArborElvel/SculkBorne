@@ -9,6 +9,7 @@ import com.unddefined.sculkborne.entities.SculkSkeletonEntity;
 import com.unddefined.sculkborne.entities.SculkSpreaderEntity;
 import com.unddefined.sculkborne.entities.SculkZombieEntity;
 import com.unddefined.sculkborne.entities.SculverfishEntity;
+import com.unddefined.sculkborne.entities.WandererEntity;
 import com.unddefined.sculkborne.server.events.SculkMobSpawnPlacements;
 import com.unddefined.sculkborne.server.registry.BlockEntityRegistry;
 import com.unddefined.sculkborne.server.registry.BlockRegistry;
@@ -58,5 +59,6 @@ public class SculkBorne {
         event.put(EntityRegistry.SCULVERFISH_ENTITY.get(), SculverfishEntity.createAttributes().build());
         event.put(EntityRegistry.SCULK_SHADE_ENTITY.get(), SculkShadeEntity.createAttributes().build());
         event.put(EntityRegistry.SCULK_MITE_ENTITY.get(), SculkMiteEntity.createAttributes().build());
+        event.put(EntityRegistry.WANDERER_ENTITY.get(), WandererEntity.createAttributes().build());
     }
 }

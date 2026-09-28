@@ -11,6 +11,7 @@ import com.unddefined.sculkborne.client.renderer.entity.SculkSkeletonEntityRende
 import com.unddefined.sculkborne.client.renderer.entity.SculkSpreaderEntityRenderer;
 import com.unddefined.sculkborne.client.renderer.entity.SculkZombieEntityRenderer;
 import com.unddefined.sculkborne.client.renderer.entity.SculverfishEntityRenderer;
+import com.unddefined.sculkborne.client.renderer.entity.WandererEntityRenderer;
 import com.unddefined.sculkborne.server.registry.BlockEntityRegistry;
 import com.unddefined.sculkborne.server.registry.EntityRegistry;
 import com.unddefined.sculkborne.server.registry.ParticlesRegistry;
@@ -72,6 +73,7 @@ public class SculkBorneClient {
         event.registerEntityRenderer(EntityRegistry.SCULVERFISH_ENTITY.get(), SculverfishEntityRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SCULK_SHADE_ENTITY.get(), SculkShadeEntityRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SCULK_MITE_ENTITY.get(), SculkMiteEntityRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.WANDERER_ENTITY.get(), WandererEntityRenderer::new);
     }
 
     @SubscribeEvent

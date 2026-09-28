@@ -7,6 +7,7 @@ import com.unddefined.sculkborne.entities.SculkSkeletonEntity;
 import com.unddefined.sculkborne.entities.SculkSpreaderEntity;
 import com.unddefined.sculkborne.entities.SculkZombieEntity;
 import com.unddefined.sculkborne.entities.SculverfishEntity;
+import com.unddefined.sculkborne.entities.WandererEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -47,4 +48,9 @@ public class EntityRegistry {
             ENTITIES.register("sculk_mite_entity", () -> EntityType.Builder.of(SculkMiteEntity::new, MobCategory.MONSTER)
                     .sized(0.4F, 0.3F).eyeHeight(0.13F).passengerAttachments(0.2375F).clientTrackingRange(8)
                     .build("sculk_mite_entity"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<WandererEntity>> WANDERER_ENTITY =
+            ENTITIES.register("wanderer_entity", () -> EntityType.Builder.of(WandererEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 2.9F).eyeHeight(2.55F).passengerAttachments(2.80625F).clientTrackingRange(8)
+                    .build("wanderer_entity"));
 }

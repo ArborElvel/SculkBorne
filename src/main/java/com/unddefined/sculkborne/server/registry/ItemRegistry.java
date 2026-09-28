@@ -37,6 +37,8 @@ public class ItemRegistry {
             props -> new DeferredSpawnEggItem(EntityRegistry.SCULK_SHADE_ENTITY, 0xFFFFFF, 0xFFFFFF, props));
     public static final DeferredItem<SpawnEggItem> SCULK_MITE_SPAWN_EGG = ITEMS.registerItem("sculk_mite_spawn_egg",
             props -> new DeferredSpawnEggItem(EntityRegistry.SCULK_MITE_ENTITY, 0xFFFFFF, 0xFFFFFF, props));
+    public static final DeferredItem<SpawnEggItem> WANDERER_SPAWN_EGG = ITEMS.registerItem("wanderer_spawn_egg",
+            props -> new DeferredSpawnEggItem(EntityRegistry.WANDERER_ENTITY, 0xFFFFFF, 0xFFFFFF, props));
 
     public static final DeferredItem<BlockItem> CALIBRATED_SCULK_SHRIEKER_ITEM =
             ITEMS.registerSimpleBlockItem("calibrated_sculk_shrieker", BlockRegistry.CALIBRATED_SCULK_SHRIEKER);
