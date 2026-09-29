@@ -10,24 +10,30 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 /**
- * 幽匿僵尸的头。
+ * 幽匿骷髅的头。
  *
- * <p>方块本身沿用原版头颅，行为见 {@link SculkHeadBlock}：接收振动、输出红石，也会像原版感测体那样
+ * <p>方块本身沿用原版头颅，行为见 {@link SculkHeadBlock}：接收振动、输出红石，但不像感测体那样
  * 共鸣相邻的振动共鸣方块。
  */
-public class SculkZombieHeadBlock extends SculkHeadBlock {
-    public SculkZombieHeadBlock() {
-        super(Types.ZOMBIE, Properties.of()
+public class SculkSkeletonHeadBlock extends SculkHeadBlock {
+    public SculkSkeletonHeadBlock() {
+        super(Types.SKELETON, Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
-                .instrument(NoteBlockInstrument.ZOMBIE)
+                .instrument(NoteBlockInstrument.SKELETON)
                 .strength(1.0F)
                 .sound(SoundType.SCULK_SENSOR)
                 .lightLevel(state -> 1)
-                .pushReaction(PushReaction.DESTROY), true);
+                .pushReaction(PushReaction.DESTROY), false);
+    }
+
+    /** 只接收振动并推出红石，不与相邻的振动共鸣方块共鸣。 */
+    @Override
+    protected boolean resonatesWithAmethyst() {
+        return false;
     }
 
     @Override
     public BlockEntityType<SculkHeadBlockEntity> blockEntityType() {
-        return BlockEntityRegistry.SCULK_ZOMBIE_HEAD.get();
+        return BlockEntityRegistry.SCULK_SKELETON_HEAD.get();
     }
 }

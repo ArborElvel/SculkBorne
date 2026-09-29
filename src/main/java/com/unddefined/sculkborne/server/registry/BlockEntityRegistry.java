@@ -2,8 +2,8 @@ package com.unddefined.sculkborne.server.registry;
 
 import com.unddefined.sculkborne.blocks.entity.CalibratedSculkShriekerBlockEntity;
 import com.unddefined.sculkborne.blocks.entity.EchoDruseBlockEntity;
+import com.unddefined.sculkborne.blocks.entity.SculkHeadBlockEntity;
 import com.unddefined.sculkborne.blocks.entity.SculkWhisperBlockEntity;
-import com.unddefined.sculkborne.blocks.entity.SculkZombieHeadBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -31,9 +31,15 @@ public class BlockEntityRegistry {
                     BlockRegistry.SCULK_WHISPER.get()
             ).build(null));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SculkZombieHeadBlockEntity>> SCULK_ZOMBIE_HEAD =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SculkHeadBlockEntity>> SCULK_ZOMBIE_HEAD =
             BLOCK_ENTITY_TYPES.register("sculk_zombie_head", () -> BlockEntityType.Builder.of(
-                    SculkZombieHeadBlockEntity::new,
+                    SculkHeadBlockEntity::new,
                     BlockRegistry.SCULK_ZOMBIE_HEAD.get()
+            ).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SculkHeadBlockEntity>> SCULK_SKELETON_HEAD =
+            BLOCK_ENTITY_TYPES.register("sculk_skeleton_head", () -> BlockEntityType.Builder.of(
+                    SculkHeadBlockEntity::new,
+                    BlockRegistry.SCULK_SKELETON_HEAD.get()
             ).build(null));
 }

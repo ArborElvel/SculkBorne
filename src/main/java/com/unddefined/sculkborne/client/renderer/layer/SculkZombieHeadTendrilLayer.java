@@ -3,7 +3,7 @@ package com.unddefined.sculkborne.client.renderer.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.unddefined.sculkborne.blocks.SculkZombieHeadBlock;
-import com.unddefined.sculkborne.blocks.entity.SculkZombieHeadBlockEntity;
+import com.unddefined.sculkborne.blocks.entity.SculkHeadBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ import java.util.List;
  *
  * <p>贴图本身带 mcmeta 帧动画，交给 GeckoLib 的 {@link AnimatableTexture} 按当前时间推帧。
  */
-public class SculkZombieHeadTendrilLayer extends FastBoneFilterGeoLayer<SculkZombieHeadBlockEntity> {
+public class SculkZombieHeadTendrilLayer extends FastBoneFilterGeoLayer<SculkHeadBlockEntity> {
     /** 原版幽匿感测体（未激活）的触须贴图。 */
     public static final ResourceLocation TENDRIL_TEXTURE =
             ResourceLocation.withDefaultNamespace("textures/block/sculk_sensor_tendril_inactive.png");
@@ -36,7 +36,7 @@ public class SculkZombieHeadTendrilLayer extends FastBoneFilterGeoLayer<SculkZom
     /** geo.json 中使用原版触须贴图的骨骼名。 */
     private static final List<String> TENDRIL_BONES = List.of("tendril");
 
-    public SculkZombieHeadTendrilLayer(GeoRenderer<SculkZombieHeadBlockEntity> renderer) {
+    public SculkZombieHeadTendrilLayer(GeoRenderer<SculkHeadBlockEntity> renderer) {
         // 主贴图这一遍把触须骨骼藏掉：它的 UV 指向原版贴图，在实体贴图上没有内容
         super(renderer, () -> TENDRIL_BONES, (bone, animatable, partialTick) -> {
             bone.setHidden(true);
@@ -46,7 +46,7 @@ public class SculkZombieHeadTendrilLayer extends FastBoneFilterGeoLayer<SculkZom
     }
 
     @Override
-    public void renderForBone(PoseStack poseStack, SculkZombieHeadBlockEntity animatable, GeoBone bone, RenderType renderType,
+    public void renderForBone(PoseStack poseStack, SculkHeadBlockEntity animatable, GeoBone bone, RenderType renderType,
                               MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick,
                               int packedLight, int packedOverlay) {
         if (!TENDRIL_BONES.contains(bone.getName())) return;

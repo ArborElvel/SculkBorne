@@ -2,6 +2,7 @@ package com.unddefined.sculkborne.server.registry;
 
 import com.unddefined.sculkborne.blocks.CalibratedSculkShriekerBlock;
 import com.unddefined.sculkborne.blocks.EchoDruseBlock;
+import com.unddefined.sculkborne.blocks.SculkSkeletonHeadBlock;
 import com.unddefined.sculkborne.blocks.SculkZombieHeadBlock;
 import com.unddefined.sculkborne.blocks.SculkWhisperBlock;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -18,4 +19,6 @@ public class BlockRegistry {
             BLOCKS.register("sculk_whisper", SculkWhisperBlock::new);
     public static final DeferredBlock<SculkZombieHeadBlock> SCULK_ZOMBIE_HEAD =
             BLOCKS.register("sculk_zombie_head", SculkZombieHeadBlock::new);
+    public static final DeferredBlock<SculkSkeletonHeadBlock> SCULK_SKELETON_HEAD =
+            BLOCKS.register("sculk_skeleton_head", SculkSkeletonHeadBlock::new);
 }

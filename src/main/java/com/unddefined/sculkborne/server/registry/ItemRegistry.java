@@ -46,6 +46,8 @@ public class ItemRegistry {
             ITEMS.registerSimpleBlockItem("sculk_whisper", BlockRegistry.SCULK_WHISPER);
     public static final DeferredItem<BlockItem> SCULK_ZOMBIE_HEAD_ITEM =
             ITEMS.registerSimpleBlockItem("sculk_zombie_head", BlockRegistry.SCULK_ZOMBIE_HEAD);
+    public static final DeferredItem<BlockItem> SCULK_SKELETON_HEAD_ITEM =
+            ITEMS.registerSimpleBlockItem("sculk_skeleton_head", BlockRegistry.SCULK_SKELETON_HEAD);
 
     public static final DeferredItem<BlockItem> ECHO_DRUSE_STAGE1_ITEM = registerEchoDruse("echo_druse_stage1", 1);
     public static final DeferredItem<BlockItem> ECHO_DRUSE_STAGE2_ITEM = registerEchoDruse("echo_druse_stage2", 2);

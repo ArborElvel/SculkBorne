@@ -68,7 +68,7 @@
 					]
 				},
 				{
-					"name": "tentril",
+					"name": "tendril",
 					"parent": "head",
 					"pivot": [0, 60, 0],
 					"cubes": [

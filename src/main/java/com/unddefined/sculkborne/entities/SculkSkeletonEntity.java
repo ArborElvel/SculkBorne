@@ -2,10 +2,12 @@ package com.unddefined.sculkborne.entities;
 
 import com.unddefined.sculkborne.entities.ai.InvestigateVibrationGoal;
 import com.unddefined.sculkborne.entities.ai.VibrationInvestigator;
+import com.unddefined.sculkborne.server.registry.ItemRegistry;
 import com.unddefined.sculkborne.server.registry.MobEffectRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -14,7 +16,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.DynamicGameEventListener;
@@ -196,6 +200,19 @@ public class SculkSkeletonEntity extends Skeleton implements GeoEntity, SculkMob
     @Override
     protected boolean isSunBurnTick() {
         return false;
+    }
+
+    /**
+     * 头的掉落机制与原版骷髅一致：只有被闪电苦力怕炸死时才掉（原版 {@link Skeleton} 也是在
+     * {@code dropCustomDeathLoot} 里判定 {@code Creeper#canDropMobsSkull()}，同一只闪电苦力怕最多掉一个头），
+     * 这里只把掉落物换成幽匿骷髅的头，因此不调用父类那份——它会掉出原版的普通骷髅头。
+     */
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
+        if (damageSource.getEntity() instanceof Creeper creeper && creeper.canDropMobsSkull()) {
+            creeper.increaseDroppedSkulls();
+            spawnAtLocation(new ItemStack(ItemRegistry.SCULK_SKELETON_HEAD_ITEM.get()));
+        }
     }
 
     /**

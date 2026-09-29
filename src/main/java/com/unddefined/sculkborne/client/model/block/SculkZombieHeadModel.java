@@ -1,6 +1,6 @@
 package com.unddefined.sculkborne.client.model.block;
 
-import com.unddefined.sculkborne.blocks.entity.SculkZombieHeadBlockEntity;
+import com.unddefined.sculkborne.blocks.entity.SculkHeadBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 
@@ -11,7 +11,7 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
  * 就是实体模型头上那部分的坐标，贴图也指向 {@code textures/entity/sculk_zombie.png}，
  * 所以方块上的头和生物头上的头长得一模一样。
  */
-public class SculkZombieHeadModel<T extends SculkZombieHeadBlockEntity> extends DefaultedBlockGeoModel<T> {
+public class SculkZombieHeadModel<T extends SculkHeadBlockEntity> extends DefaultedBlockGeoModel<T> {
     /** 幽匿僵尸实体的贴图，头的各个面都从这里取样。 */
     private static final ResourceLocation ENTITY_TEXTURE =
             ResourceLocation.fromNamespaceAndPath("sculkborne", "textures/entity/sculk_zombie.png");
