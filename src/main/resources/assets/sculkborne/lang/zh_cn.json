@@ -42,6 +42,7 @@
   "config.sculkborne.configuration.sculk_whisper_affect_range": "幽匿低鸣体效果范围",
   "config.sculkborne.configuration.sculk_whisper_hurt_damage": "幽匿低鸣体伤害",
   "config.sculkborne.configuration.sculk_shrieker_can_summon_chance": "幽匿尖啸体获得可召唤状态的概率(1/N)",
+  "config.sculkborne.configuration.sculk_skeleton_head_spawn_chance": "自然生成的幽匿骷髅的头挖掉后变成幽匿骷髅的概率",
   "config.sculkborne.configuration.sculk_mite_teleport_spawn_chance": "幽匿螨传送出现概率",
   "config.sculkborne.configuration.wanderer_xp_steal_fraction": "徘徊者击中剥落经验比例",
   "config.sculkborne.configuration.wanderer_heal_per_xp": "徘徊者每点经验的回血量",

@@ -62,6 +62,11 @@ public class Config {
                     + " sculk mob death bloom) to spawn a sculk mob near the spread position, from 0.0 to 1.0.")
             .defineInRange("sculk_spreader_spawn_chance", 0.02D, 0.0D, 1.0D);
 
+    public static final ModConfigSpec.DoubleValue SCULK_SKELETON_HEAD_SPAWN_CHANCE = BUILDER
+            .comment("Chance for a naturally generated Sculk Skeleton Head to turn into a Sculk Skeleton when"
+                    + " mined; otherwise it drops a normal skeleton skull, from 0.0 to 1.0.")
+            .defineInRange("sculk_skeleton_head_spawn_chance", 0.3D, 0.0D, 1.0D);
+
     public static final ModConfigSpec.DoubleValue SCULK_MITE_TELEPORT_SPAWN_CHANCE = BUILDER
             .comment("Chance for a Sculk Mite to appear at each end (departure and destination) of an Ender Echoing"
                     + " teleport, from 0.0 to 1.0.")

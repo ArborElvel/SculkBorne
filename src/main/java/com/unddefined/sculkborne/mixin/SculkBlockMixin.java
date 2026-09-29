@@ -2,6 +2,7 @@ package com.unddefined.sculkborne.mixin;
 
 import com.unddefined.sculkborne.server.SculkSpreadSpawner;
 import com.unddefined.sculkborne.server.registry.BlockRegistry;
+import com.unddefined.sculkborne.blocks.SculkSkeletonHeadBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
@@ -36,6 +37,13 @@ public class SculkBlockMixin {
                 if (isWorldGeneration) state = BlockRegistry.SCULK_WHISPER.get().defaultBlockState();
                 else state = Blocks.SCULK_SHRIEKER.defaultBlockState()
                         .setValue(SculkShriekerBlock.CAN_SUMMON, random.nextInt(7) == 0);
+            }
+            case 2 -> {
+                if (isWorldGeneration && random.nextInt(5) == 0)
+                    state = BlockRegistry.SCULK_SKELETON_HEAD.get().defaultBlockState()
+                            .setValue(SculkSkeletonHeadBlock.NATURAL, true)
+                            .setValue(BlockStateProperties.ROTATION_16, random.nextInt(16));
+                else state = Blocks.AIR.defaultBlockState();
             }
             default -> state = Blocks.SCULK_SENSOR.defaultBlockState();
         }

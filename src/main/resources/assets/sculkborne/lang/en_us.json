@@ -42,6 +42,7 @@
   "config.sculkborne.configuration.sculk_whisper_affect_range": "Sculk Whisper effect range",
   "config.sculkborne.configuration.sculk_whisper_hurt_damage": "Sculk Whisper damage",
   "config.sculkborne.configuration.sculk_shrieker_can_summon_chance": "Sculk Shrieker CAN_SUMMON chance (1 in N)",
+  "config.sculkborne.configuration.sculk_skeleton_head_spawn_chance": "Naturally generated Sculk Skeleton Head conversion chance",
   "config.sculkborne.configuration.sculk_mite_teleport_spawn_chance": "Sculk Mite teleport spawn chance",
   "config.sculkborne.configuration.wanderer_xp_steal_fraction": "Wanderer experience steal fraction",
   "config.sculkborne.configuration.wanderer_heal_per_xp": "Wanderer health gained per experience",
