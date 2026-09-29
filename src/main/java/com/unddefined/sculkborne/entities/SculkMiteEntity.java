@@ -1,5 +1,6 @@
 package com.unddefined.sculkborne.entities;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.Endermite;
@@ -7,6 +8,9 @@ import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
@@ -23,7 +27,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  * <p>它不会自然生成：生成表与生成位置规则里都没有它，只在使用末影回响仪器传送后按几率出现，
  * 见 {@link com.unddefined.sculkborne.compat.enderechoing.EnderEchoingTeleportHooks}。
  *
- * <p>外观由客户端的 {@code SculkMiteCemAnimator} 计算：geo 的骨架改成 Fresh Animations 末影螨的
+ * <p>外观由 freshsculk 的 {@code SculkMiteCemAnimator} 计算：geo 的骨架改成 Fresh Animations 末影螨的
  * {@code body2 / head / head_s / tail / tail_s / tail1 / tail1_s / tail2} 层级后，
  * CEM 公式（待机蠕动、行走摆动与死亡蜷缩）可以逐条移植过来。
  */
@@ -53,9 +57,23 @@ public class SculkMiteEntity extends Endermite implements GeoEntity, SculkMob {
     }
 
     @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean hit = super.doHurtTarget(target);
+
+        if (hit) this.triggerAnim("attack", "attack");
+
+        return hit;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // 姿势完全由客户端的 SculkMiteEntityModel 计算（原版末影螨的分节摆动），
-        // 因此不注册关键帧动画控制器
+        // 未安装 freshsculk 时的关键帧回退；装了之后整帧姿势由 CEM 动画器托管
+        controllers.add(new AnimationController<>(this, "controller", 1,
+                state -> state.isMoving()
+                        ? state.setAndContinue(RawAnimation.begin().thenLoop("walk"))
+                        : state.setAndContinue(RawAnimation.begin().thenLoop("idle"))));
+        controllers.add(new AnimationController<>(this, "attack", 0, state -> PlayState.STOP)
+                .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
     }
 
     @Override

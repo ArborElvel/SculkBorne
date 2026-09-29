@@ -1,5 +1,6 @@
 package com.unddefined.sculkborne.entities;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -7,6 +8,9 @@ import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
@@ -23,9 +27,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  * <p>骨架与贴图见 {@code assets/sculkborne/geo/entity/wanderer.geo.json} 与
  * {@code assets/sculkborne/textures/entity/wanderer.png}；脸上是异瞳，右眼沿用原版末影人的瞳色、
  * 左眼是 {@code #29DFEB}，颜色取自主贴图的两格瞳孔像素，再由客户端的 {@code WandererEyesLayer}
- * 用自发光渲染类型重画瞳孔方块；瞳孔转动、上下裁剪与眨眼见 {@code WandererCemAnimator#animateEyes}；
+ * 用自发光渲染类型重画瞳孔方块；瞳孔转动、上下裁剪与眨眼见 freshsculk 的 {@code WandererCemAnimator#animateEyes}；
  * 待机、行走、注视与搬运方块的姿势则是 Fresh Animations 末影人 CEM 动画的移植，
- * 见客户端的 {@code WandererCemAnimator}；
+ * 见 freshsculk 的 {@code WandererCemAnimator}；
  * 触发振动与干扰传送等专属行为不在这里实现。
  */
 public class WandererEntity extends EnderMan implements GeoEntity, SculkMob {
@@ -54,9 +58,23 @@ public class WandererEntity extends EnderMan implements GeoEntity, SculkMob {
     }
 
     @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean hit = super.doHurtTarget(target);
+
+        if (hit) this.triggerAnim("attack", "attack");
+
+        return hit;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // 姿势完全由客户端的 WandererCemAnimator 计算（CEM 公式本身包含待机/行走/注视/受伤/搬运），
-        // 因此不注册关键帧动画控制器
+        // 未安装 freshsculk 时的关键帧回退；装了之后整帧姿势由 CEM 动画器托管
+        controllers.add(new AnimationController<>(this, "controller", 1,
+                state -> state.isMoving()
+                        ? state.setAndContinue(RawAnimation.begin().thenLoop("walk"))
+                        : state.setAndContinue(RawAnimation.begin().thenLoop("idle"))));
+        controllers.add(new AnimationController<>(this, "attack", 0, state -> PlayState.STOP)
+                .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
     }
 
     @Override

@@ -13,6 +13,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -21,6 +22,8 @@ import static com.unddefined.sculkborne.Config.*;
 public class CreesperEntity extends Creeper implements GeoEntity, SculkMob {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int sculkHealCooldown;
+    /** 上一 tick 是否处于自爆膨胀状态，用来找出“开始膨胀”的那一帧。 */
+    private boolean attackAnimationPlaying;
 
     public CreesperEntity(EntityType<CreesperEntity> entityType, Level level) {
         super(entityType, level);
@@ -28,6 +31,18 @@ public class CreesperEntity extends Creeper implements GeoEntity, SculkMob {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Creeper.createAttributes();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        // 苦力怕没有近战，攻击动画以“开始自爆膨胀”为触发点。
+        boolean swelling = this.getSwellDir() > 0;
+
+        if (swelling && !this.attackAnimationPlaying) this.triggerAnim("attack", "attack");
+
+        this.attackAnimationPlaying = swelling;
     }
 
     @Override
@@ -85,10 +100,13 @@ public class CreesperEntity extends Creeper implements GeoEntity, SculkMob {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        // 未安装 freshsculk 时的关键帧回退；装了之后整帧姿势由 CEM 动画器托管
         controllers.add(new AnimationController<>(this, "controller", 1,
                 state -> state.isMoving()
                         ? state.setAndContinue(RawAnimation.begin().thenLoop("walk"))
                         : state.setAndContinue(RawAnimation.begin().thenLoop("idle"))));
+        controllers.add(new AnimationController<>(this, "attack", 0, state -> PlayState.STOP)
+                .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
     }
 
     @Override

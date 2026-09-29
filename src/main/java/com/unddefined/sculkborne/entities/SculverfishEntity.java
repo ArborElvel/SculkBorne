@@ -41,6 +41,9 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
@@ -262,6 +265,9 @@ public class SculverfishEntity extends Silverfish implements GeoEntity, SculkMob
     @Override
     public boolean doHurtTarget(Entity target) {
         boolean hit = super.doHurtTarget(target);
+
+        if (hit) this.triggerAnim("attack", "attack");
+
         // 攻击击中目标后优先钻地：打一下就撤，形成打了就跑的游击循环
         if (hit && !level().isClientSide) burrowRequested = true;
         return hit;
@@ -779,8 +785,13 @@ public class SculverfishEntity extends Silverfish implements GeoEntity, SculkMob
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // 姿势完全由客户端的 SculverfishCemAnimator 计算（CEM 公式本身包含待机、行走、受伤与死亡），
-        // 因此不注册关键帧动画控制器
+        // 未安装 freshsculk 时的关键帧回退；装了之后整帧姿势由 CEM 动画器托管
+        controllers.add(new AnimationController<>(this, "controller", 1,
+                state -> state.isMoving()
+                        ? state.setAndContinue(RawAnimation.begin().thenLoop("walk"))
+                        : state.setAndContinue(RawAnimation.begin().thenLoop("idle"))));
+        controllers.add(new AnimationController<>(this, "attack", 0, state -> PlayState.STOP)
+                .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
     }
 
     @Override
