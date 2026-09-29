@@ -1,5 +1,6 @@
 package com.unddefined.sculkborne.mixin;
 
+import com.unddefined.sculkborne.server.SculkSpreadSpawner;
 import com.unddefined.sculkborne.server.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -7,6 +8,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SculkBlock;
 import net.minecraft.world.level.block.SculkShriekerBlock;
+import net.minecraft.world.level.block.SculkSpreader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +29,7 @@ public class SculkBlockMixin {
     private void sculkborne$naturalSculkWhisperGrowth(LevelAccessor level, BlockPos pos, RandomSource random,
                                                         boolean isWorldGeneration, CallbackInfoReturnable<BlockState> cir) {
         BlockState state;
-        switch (random.nextInt(isWorldGeneration ? 10 : 5)) {
+        switch (random.nextInt(isWorldGeneration ? 10 : 6)) {
             case 0 -> state = Blocks.SCULK_SHRIEKER.defaultBlockState()
                     .setValue(SculkShriekerBlock.CAN_SUMMON, isWorldGeneration || random.nextInt(7) == 0);
             case 1 -> {
@@ -43,5 +45,20 @@ public class SculkBlockMixin {
             state = state.setValue(BlockStateProperties.WATERLOGGED, true);
 
         cir.setReturnValue(state);
+    }
+
+    /**
+     * 幽匿块那版 {@code attemptUseCharge} 里，长出感测体/尖啸体时刷出幽匿生物。
+     *
+     * <p>{@code SculkBlock#attemptUseCharge} 的放置音效只在生长物真的落到光标上方时播放，
+     * 所以这里以这次播放为「生长成功」的判定点，把光标所在的幽匿块位置交给
+     * {@link SculkSpreadSpawner} 决定要不要刷怪。
+     */
+    @Inject(method = "attemptUseCharge", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/level/LevelAccessor;playSound(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
+    private void sculkborne$spawnSculkMobOnGrowth(SculkSpreader.ChargeCursor cursor, LevelAccessor level, BlockPos pos,
+                                                  RandomSource random, SculkSpreader spreader, boolean shouldConvertBlocks,
+                                                  CallbackInfoReturnable<Integer> cir) {
+        SculkSpreadSpawner.onSpread(level, cursor.getPos(), spreader);
     }
 }

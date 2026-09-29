@@ -11,6 +11,7 @@
     "PlayerMixin",
     "SculkBlockMixin",
     "SculkPatchFeatureMixin",
+    "SculkVeinBlockMixin",
     "WardenMixin"
   ],
   "client": [
