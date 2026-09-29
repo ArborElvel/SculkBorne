@@ -1,0 +1,10 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "particle": "sculkborne:block/sculk_zombie_head"
+  },
+  "texture_size": [
+    64,
+    64
+  ]
+}

@@ -1,5 +1,6 @@
 package com.unddefined.sculkborne.entities;
 
+import com.unddefined.sculkborne.server.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.DynamicGameEventListener;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -176,6 +178,16 @@ public class SculkZombieEntity extends Zombie implements GeoEntity, SculkMob, Vi
     @Override
     protected boolean isSunSensitive() {
         return false;
+    }
+
+    /**
+     * 头的掉落机制与原版僵尸完全一致：只有被闪电苦力怕炸死时才掉（
+     * {@link Zombie#dropCustomDeathLoot} 里判定 {@code Creeper#canDropMobsSkull()}，
+     * 同一只闪电苦力怕最多掉一个头），这里只把掉落物换成幽匿僵尸的头。
+     */
+    @Override
+    protected ItemStack getSkull() {
+        return new ItemStack(ItemRegistry.SCULK_ZOMBIE_HEAD_ITEM.get());
     }
 
     @Override

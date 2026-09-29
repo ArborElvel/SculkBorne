@@ -12,6 +12,7 @@ import com.unddefined.sculkborne.client.model.cem.CemAnimatorRegistry;
 import com.unddefined.sculkborne.client.particles.ParticleDirectlyMovingDust;
 import com.unddefined.sculkborne.client.renderer.block.CalibratedSculkShriekerRenderer;
 import com.unddefined.sculkborne.client.renderer.block.SculkWhisperRenderer;
+import com.unddefined.sculkborne.client.renderer.block.SculkZombieHeadRenderer;
 import com.unddefined.sculkborne.client.renderer.entity.CreesperEntityRenderer;
 import com.unddefined.sculkborne.client.renderer.entity.SculkMiteEntityRenderer;
 import com.unddefined.sculkborne.client.renderer.entity.SculkShadeEntityRenderer;
@@ -70,6 +71,8 @@ public class SculkBorneClient {
                     context -> new CalibratedSculkShriekerRenderer());
             BlockEntityRenderers.register(BlockEntityRegistry.SCULK_WHISPER.get(),
                     context -> new SculkWhisperRenderer());
+            BlockEntityRenderers.register(BlockEntityRegistry.SCULK_ZOMBIE_HEAD.get(),
+                    context -> new SculkZombieHeadRenderer());
 
             registerVanillaAnimators();
         });

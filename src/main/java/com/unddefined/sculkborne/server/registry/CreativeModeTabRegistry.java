@@ -30,6 +30,7 @@ public class CreativeModeTabRegistry {
                         output.accept(Items.SCULK_CATALYST);
                         output.accept(Items.SCULK_SENSOR);
                         output.accept(Items.CALIBRATED_SCULK_SENSOR);
+                        output.accept(ItemRegistry.SCULK_ZOMBIE_HEAD_ITEM.get());
                         output.accept(Items.SCULK_SHRIEKER);
                         output.accept(ItemRegistry.CALIBRATED_SCULK_SHRIEKER_ITEM.get());
                         output.accept(ItemRegistry.SCULK_WHISPER_ITEM.get());
