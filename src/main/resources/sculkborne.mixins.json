@@ -8,6 +8,7 @@
     "ExperienceOrbAccess",
     "ExperienceOrbMixin",
     "LivingEntityMixin",
+    "PlayerMixin",
     "SculkBlockMixin",
     "SculkPatchFeatureMixin",
     "WardenMixin"

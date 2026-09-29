@@ -76,5 +76,24 @@ public class Config {
                     + " warp platform, crystal) while that device is loaded, from 0.0 to 1.0.")
             .defineInRange("wanderer_device_spawn_chance", 0.001D, 0.0D, 1.0D);
 
+    public static final ModConfigSpec.DoubleValue WANDERER_SHADOW_CHANCE = BUILDER
+            .comment("Chance for a Wanderer to leave a Wanderer Shadow behind after it teleports, from 0.0 to 1.0.")
+            .defineInRange("wanderer_shadow_chance", 0.25D, 0.0D, 1.0D);
+
+    public static final ModConfigSpec.DoubleValue WANDERER_HURT_TELEPORT_CHANCE = BUILDER
+            .comment("Chance for a Wanderer to teleport away when it is hit by a living entity in melee,"
+                    + " from 0.0 to 1.0.")
+            .defineInRange("wanderer_hurt_teleport_chance", 0.3D, 0.0D, 1.0D);
+
+    public static final ModConfigSpec.DoubleValue WANDERER_ATTACK_TELEPORT_CHANCE = BUILDER
+            .comment("Chance for a Wanderer to teleport away right after its melee attack lands,"
+                    + " from 0.0 to 1.0.")
+            .defineInRange("wanderer_attack_teleport_chance", 0.3D, 0.0D, 1.0D);
+
+    public static final ModConfigSpec.IntValue WANDERER_TELEPORT_COOLDOWN = BUILDER
+            .comment("Minimum interval between two Wanderer teleports, in ticks (20 ticks = 1 second)."
+                    + " The chance-based teleports wait for it; vanilla's own teleports only reset it.")
+            .defineInRange("wanderer_teleport_cooldown", 70, 0, Integer.MAX_VALUE);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

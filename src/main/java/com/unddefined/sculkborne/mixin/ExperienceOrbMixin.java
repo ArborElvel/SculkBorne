@@ -1,6 +1,7 @@
 package com.unddefined.sculkborne.mixin;
 
 import com.unddefined.sculkborne.entities.WandererEntity;
+import com.unddefined.sculkborne.entities.PickupDelayed;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -23,16 +24,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * <p>加速公式与原版跟随玩家完全一致，只改移动，不介入经验球的结算（吸取经验球由徘徊者自己处理）。
  */
 @Mixin(ExperienceOrb.class)
-public abstract class ExperienceOrbMixin {
+public abstract class ExperienceOrbMixin implements PickupDelayed {
 
     /** 当前吸引该经验球的徘徊者，每次扫描时重选一只。 */
     @Unique
     @Nullable
     private WandererEntity sculkborne$followingWanderer;
 
+    /** 不能被捡走的解禁时刻（游戏刻），见 {@link #sculkborne$delayPickup(long)}。 */
+    @Unique
+    private long sculkborne$pickupDelayUntil = Long.MIN_VALUE;
+
     /** 原版跟随的玩家，徘徊者吸引期间会被清掉。 */
     @Shadow
     private Player followingPlayer;
+
+    @Override
+    public void sculkborne$delayPickup(long ticks) {
+        this.sculkborne$pickupDelayUntil = ((ExperienceOrb) (Object) this).level().getGameTime() + ticks;
+    }
+
+    @Override
+    public boolean sculkborne$isPickupDelayed() {
+        return ((ExperienceOrb) (Object) this).level().getGameTime() < this.sculkborne$pickupDelayUntil;
+    }
 
     /**
      * 在原版扫描玩家的同一刻重选徘徊者：目标无效（死亡或走出范围）时清空，没有目标时再找最近的一只。

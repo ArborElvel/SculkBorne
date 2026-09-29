@@ -20,6 +20,7 @@ import com.unddefined.sculkborne.client.renderer.entity.SculkSpreaderEntityRende
 import com.unddefined.sculkborne.client.renderer.entity.SculkZombieEntityRenderer;
 import com.unddefined.sculkborne.client.renderer.entity.SculverfishEntityRenderer;
 import com.unddefined.sculkborne.client.renderer.entity.WandererEntityRenderer;
+import com.unddefined.sculkborne.client.renderer.entity.WanderShadowEntityRenderer;
 import com.unddefined.sculkborne.server.registry.BlockEntityRegistry;
 import com.unddefined.sculkborne.server.registry.EntityRegistry;
 import com.unddefined.sculkborne.server.registry.ParticlesRegistry;
@@ -86,6 +87,7 @@ public class SculkBorneClient {
         CemAnimatorRegistry.registerBuiltin(EntityRegistry.SCULK_ZOMBIE_ENTITY.get(), ZombieVanillaAnimator::new);
         CemAnimatorRegistry.registerBuiltin(EntityRegistry.SCULVERFISH_ENTITY.get(), SilverfishVanillaAnimator::new);
         CemAnimatorRegistry.registerBuiltin(EntityRegistry.WANDERER_ENTITY.get(), EndermanVanillaAnimator::new);
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.WANDER_SHADOW_ENTITY.get(), EndermanVanillaAnimator::new);
     }
 
     @SubscribeEvent
@@ -98,6 +100,7 @@ public class SculkBorneClient {
         event.registerEntityRenderer(EntityRegistry.SCULK_SHADE_ENTITY.get(), SculkShadeEntityRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SCULK_MITE_ENTITY.get(), SculkMiteEntityRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WANDERER_ENTITY.get(), WandererEntityRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.WANDER_SHADOW_ENTITY.get(), WanderShadowEntityRenderer::new);
     }
 
     @SubscribeEvent

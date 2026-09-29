@@ -8,6 +8,7 @@ import com.unddefined.sculkborne.entities.SculkSpreaderEntity;
 import com.unddefined.sculkborne.entities.SculkZombieEntity;
 import com.unddefined.sculkborne.entities.SculverfishEntity;
 import com.unddefined.sculkborne.entities.WandererEntity;
+import com.unddefined.sculkborne.entities.WanderShadowEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -53,4 +54,9 @@ public class EntityRegistry {
             ENTITIES.register("wanderer_entity", () -> EntityType.Builder.of(WandererEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 2.9F).eyeHeight(2.55F).passengerAttachments(2.80625F).clientTrackingRange(8)
                     .build("wanderer_entity"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<WanderShadowEntity>> WANDER_SHADOW_ENTITY =
+            ENTITIES.register("wander_shadow_entity", () -> EntityType.Builder.of(WanderShadowEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 2.9F).eyeHeight(2.55F).passengerAttachments(2.80625F).clientTrackingRange(8)
+                    .build("wander_shadow_entity"));
 }
