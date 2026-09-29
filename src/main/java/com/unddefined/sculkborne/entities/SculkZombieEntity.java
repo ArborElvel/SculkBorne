@@ -24,9 +24,6 @@ import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -182,23 +179,8 @@ public class SculkZombieEntity extends Zombie implements GeoEntity, SculkMob, Vi
     }
 
     @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean hit = super.doHurtTarget(target);
-
-        if (hit) this.triggerAnim("attack", "attack");
-
-        return hit;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // 未安装 freshsculk 时的关键帧回退；装了之后整帧姿势由 CEM 动画器托管
-        controllers.add(new AnimationController<>(this, "controller", 1,
-                state -> state.isMoving()
-                        ? state.setAndContinue(RawAnimation.begin().thenLoop("walk"))
-                        : state.setAndContinue(RawAnimation.begin().thenLoop("idle"))));
-        controllers.add(new AnimationController<>(this, "attack", 0, state -> PlayState.STOP)
-                .triggerableAnim("attack", RawAnimation.begin().thenPlay("attack")));
+        // 姿势完全由客户端的 VanillaAnimator / CEM 动画器计算，这里不注册关键帧动画控制器
     }
 
     @Override

@@ -1,6 +1,14 @@
 package com.unddefined.sculkborne.client;
 
 import com.unddefined.sculkborne.SculkBorne;
+import com.unddefined.sculkborne.client.model.anim.CreeperVanillaAnimator;
+import com.unddefined.sculkborne.client.model.anim.EndermanVanillaAnimator;
+import com.unddefined.sculkborne.client.model.anim.EndermiteVanillaAnimator;
+import com.unddefined.sculkborne.client.model.anim.SilverfishVanillaAnimator;
+import com.unddefined.sculkborne.client.model.anim.SkeletonVanillaAnimator;
+import com.unddefined.sculkborne.client.model.anim.VexVanillaAnimator;
+import com.unddefined.sculkborne.client.model.anim.ZombieVanillaAnimator;
+import com.unddefined.sculkborne.client.model.cem.CemAnimatorRegistry;
 import com.unddefined.sculkborne.client.particles.ParticleDirectlyMovingDust;
 import com.unddefined.sculkborne.client.renderer.block.CalibratedSculkShriekerRenderer;
 import com.unddefined.sculkborne.client.renderer.block.SculkWhisperRenderer;
@@ -61,7 +69,23 @@ public class SculkBorneClient {
                     context -> new CalibratedSculkShriekerRenderer());
             BlockEntityRenderers.register(BlockEntityRegistry.SCULK_WHISPER.get(),
                     context -> new SculkWhisperRenderer());
+
+            registerVanillaAnimators();
         });
+    }
+
+    /**
+     * 注册 per mob 的原版动作移植（内置兜底）：没有安装 CEM 附属时由它们接管整帧姿势，
+     * 装了之后附属在 {@code CemAnimatorRegistry} 里的注册会覆盖这些内置实现。
+     */
+    private static void registerVanillaAnimators() {
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.CREESPER_ENTITY.get(), CreeperVanillaAnimator::new);
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.SCULK_MITE_ENTITY.get(), EndermiteVanillaAnimator::new);
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.SCULK_SHADE_ENTITY.get(), VexVanillaAnimator::new);
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.SCULK_SKELETON_ENTITY.get(), SkeletonVanillaAnimator::new);
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.SCULK_ZOMBIE_ENTITY.get(), ZombieVanillaAnimator::new);
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.SCULVERFISH_ENTITY.get(), SilverfishVanillaAnimator::new);
+        CemAnimatorRegistry.registerBuiltin(EntityRegistry.WANDERER_ENTITY.get(), EndermanVanillaAnimator::new);
     }
 
     @SubscribeEvent
