@@ -5,6 +5,9 @@
   "mixins": [
     "CatalystListenerMixin",
     "EntityMixin",
+    "ExperienceOrbAccess",
+    "ExperienceOrbMixin",
+    "LivingEntityMixin",
     "SculkBlockMixin",
     "SculkPatchFeatureMixin",
     "WardenMixin"

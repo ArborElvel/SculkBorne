@@ -62,5 +62,19 @@ public class Config {
                     + " teleport, from 0.0 to 1.0.")
             .defineInRange("sculk_mite_teleport_spawn_chance", 0.05D, 0.0D, 1.0D);
 
+    public static final ModConfigSpec.DoubleValue WANDERER_XP_STEAL_FRACTION = BUILDER
+            .comment("Fraction of a player's total experience a Wanderer tears off when it hits them,"
+                    + " from 0.0 to 1.0.")
+            .defineInRange("wanderer_xp_steal_fraction", 0.01D, 0.0D, 1.0D);
+
+    public static final ModConfigSpec.DoubleValue WANDERER_HEAL_PER_XP = BUILDER
+            .comment("Health a Wanderer recovers per point of experience it absorbs from an experience orb.")
+            .defineInRange("wanderer_heal_per_xp", 1.0D, 0.0D, Double.MAX_VALUE);
+
+    public static final ModConfigSpec.DoubleValue WANDERER_DEVICE_SPAWN_CHANCE = BUILDER
+            .comment("Chance per second for a Wanderer to appear on an Ender Echoing device (resonator, tuner,"
+                    + " warp platform, crystal) while that device is loaded, from 0.0 to 1.0.")
+            .defineInRange("wanderer_device_spawn_chance", 0.001D, 0.0D, 1.0D);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

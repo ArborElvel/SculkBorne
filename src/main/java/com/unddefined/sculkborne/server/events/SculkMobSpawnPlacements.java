@@ -69,6 +69,9 @@ public class SculkMobSpawnPlacements {
         event.register(EntityRegistry.SCULK_SHADE_ENTITY.get(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SculkMobSpawnPlacements::checkSculkMobSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(EntityRegistry.WANDERER_ENTITY.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SculkMobSpawnPlacements::checkSculkMobSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     /**

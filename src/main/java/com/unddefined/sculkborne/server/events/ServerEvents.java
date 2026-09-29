@@ -9,6 +9,7 @@ import com.unddefined.sculkborne.entities.CreesperEntity;
 import com.unddefined.sculkborne.entities.SculkMob;
 import com.unddefined.sculkborne.entities.SculkSkeletonEntity;
 import com.unddefined.sculkborne.entities.SculverfishEntity;
+import com.unddefined.sculkborne.entities.WandererEntity;
 import com.unddefined.sculkborne.server.SculkBloom;
 import com.unddefined.sculkborne.server.SculkIntrusionSpreader;
 import com.unddefined.sculkborne.server.registry.ItemRegistry;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
@@ -172,6 +174,14 @@ public class ServerEvents {
         if (!(event.getSource().getEntity() instanceof SculkSkeletonEntity skeleton)) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) return;
         skeleton.applyBlindnessAndDeafnessOnHit(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void onWandererAttack(LivingIncomingDamageEvent event) {
+        if (!(event.getSource().getEntity() instanceof WandererEntity wanderer)) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(player.level() instanceof ServerLevel)) return;
+        wanderer.stripExperienceOnHit(player);
     }
 
     @SubscribeEvent
