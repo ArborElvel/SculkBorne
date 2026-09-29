@@ -127,22 +127,6 @@ public class WanderShadowEntity extends Monster implements GeoEntity {
         return true;
     }
 
-    /** 愤怒时像末影人一样尖叫，平时是末影人的低鸣。 */
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return isAngry() ? SoundEvents.ENDERMAN_SCREAM : SoundEvents.ENDERMAN_AMBIENT;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.ENDERMAN_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENDERMAN_DEATH;
-    }
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         // 姿势完全由客户端的 VanillaAnimator / CEM 动画器计算，这里不注册关键帧动画控制器
