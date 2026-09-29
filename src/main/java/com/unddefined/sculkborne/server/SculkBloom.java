@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.SculkSpreader;
 import net.minecraft.world.phys.Vec3;
 
@@ -51,7 +52,7 @@ public class SculkBloom {
         if (charge <= 0) return;
 
         BlockPos origin = bloomOrigin(pos);
-        SculkSpreader spreader = SculkSpreader.createLevelSpreader();
+        SculkSpreader spreader = new SculkSpreader(false, BlockTags.SCULK_REPLACEABLE, 5, 2, 10, 5);
         spreader.addCursors(origin, charge);
         ACTIVE_BLOOMS.add(new ActiveBloom(level, origin, spreader));
 

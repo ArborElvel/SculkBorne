@@ -2,6 +2,7 @@ package com.unddefined.sculkborne.server;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SculkSpreader;
@@ -21,7 +22,7 @@ public class SculkIntrusionSpreader {
     /** 死亡事件转化为幽匿蔓延的概率（设计稿：有几率触发） */
     public static final float TRIGGER_CHANCE = 0.6F;
 
-    private final SculkSpreader spreader = SculkSpreader.createLevelSpreader();
+    private final SculkSpreader spreader = new SculkSpreader(false, BlockTags.SCULK_REPLACEABLE, 5, 2, 10, 5);
 
     /** 以主体当前位置为心的作用盒 */
     public static AABB followBox(LivingEntity owner) {
