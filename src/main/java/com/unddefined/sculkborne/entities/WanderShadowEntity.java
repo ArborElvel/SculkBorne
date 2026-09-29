@@ -1,8 +1,10 @@
 package com.unddefined.sculkborne.entities;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,6 +47,9 @@ public class WanderShadowEntity extends Monster implements GeoEntity {
 
     /** 残影的存活时间（刻）。 */
     public static final int LIFETIME_TICKS = 100;
+
+    /** 消失时扬起的粒子数量。 */
+    private static final int VANISH_PARTICLES = 20;
 
     /** 愤怒状态，与末影人的 {@code DATA_CREEPY} 同义：有目标就是 true，见 {@link #setTarget(LivingEntity)}。 */
     private static final EntityDataAccessor<Boolean> DATA_ANGRY =
@@ -112,8 +117,23 @@ public class WanderShadowEntity extends Monster implements GeoEntity {
         if (level().isClientSide || !isAlive()) return;
         if (--lifeTicks > 0) return;
 
-        // 短暂时间后消失
+        // 短暂时间后消失：先扬一层粒子再移除
+        spawnVanishParticles();
         discard();
+    }
+
+    /**
+     * 消失时扬起的粒子。
+     *
+     * <p>用的是末影人传送那一套传送粒子：残影本来就从徘徊者的瞬移里来，散场时也就和瞬移一个味道。
+     * 想换成幽匿的魂粒子（{@code ParticleTypes.SCULK_SOUL}）改这一行即可。
+     */
+    private void spawnVanishParticles() {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+
+        serverLevel.sendParticles(ParticleTypes.PORTAL,
+                getX(), getY() + getBbHeight() / 2.0, getZ(),
+                VANISH_PARTICLES, getBbWidth() / 2.0, getBbHeight() / 2.0, getBbWidth() / 2.0, 0.1);
     }
 
     /**
