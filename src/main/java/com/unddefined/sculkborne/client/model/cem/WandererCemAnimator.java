@@ -49,6 +49,10 @@ import software.bernie.geckolib.model.GeoModel;
  * <p>另外腿按手臂的规则跟随躯干的左右摆动（滚动 {@code body.rz}、横向位移 {@code body.tx} 全程跟随，
  * 扭转 {@code body.ry} 只在待机时跟随），FA 的腿公式里没有这些项，照抄会变成躯干摆、腿不动。
  *
+ * <p>眼睛是单独一套：geo.json 里 {@code *_eye → *_eye_pupil → _in → _do → _up}、{@code *_eyelid → *_blink}
+ * 与 FA 的骨骼同名同层级，见 {@link #animateEyes}；CEM 里 FA 的 {@code right_*} 在模型 -x，
+ * 本模型 -x 的那只眼叫 {@code left_*}，所以左右两套公式是交叉用的。
+ *
  * <p>模型的骨骼与 {@code body} 同级（没有父子关系），所以位移可以直接写 CEM 的绝对值再减去静止常量；
  * 公式里出现的 {@code body.tx / body.ty / body.tz} 也照原样相加，不需要像挂在 {@code body} 下的骨架
  * 那样再减一次父级位移。
@@ -290,24 +294,29 @@ public final class WandererCemAnimator extends CemAnimator<WandererEntity> {
                 + bodyRz) * armCarryBlend;
 
         float armSwingArc = Mth.sin(Mth.sqrt(swingProgress) * Mth.PI * 2.0F) * Mth.sin(swingProgress * Mth.PI);
-        float rightArmTx = (bodyTx - Mth.cos(bodyRy) * 5.0F) * armCarryBlend
-                + (-6.0F) * carry
-                - armSwingArc;
-        float leftArmTx = (bodyTx + Mth.cos(bodyRy) * 5.0F + 0.5F * armSwingArc) * armCarryBlend
-                + 6.0F * carry;
+        // 搬运方块时 FA 三条手臂位移是常数（不含 body.tx/ty/tz），而本模型的骨骼和 body 同级、
+        // 不像 FA 那样是 body 的子级，照抄会变成"身体动、手臂留在原地"，身体一摆肩部就裂开，
+        // 所以给 ty/tz 补上 body 相对静止姿势的位移偏差，让手臂跟着身体走。
+        float armBodyTy = bodyTy - BODY_TY_REST;
+        float armBodyTz = bodyTz;
+        // tx 连 FA 的 ±6 一起丢掉：FA 的模型是自己一套几何，外挪 1 像素没事；本模型的手臂 x∈[-6,-4]
+        // 和身体 x∈[-4,4] 正好面贴面，外挪这 1 像素会在肩到上臂之间拉出一条竖缝（就是"胳膊和身体分开"），
+        // 而搬起的方块宽 8 像素、也正好卡在两手之间（±4），所以横坐标始终按静止公式走。
+        float rightArmTx = (bodyTx - Mth.cos(bodyRy) * 5.0F) - armSwingArc;
+        float leftArmTx = bodyTx + Mth.cos(bodyRy) * 5.0F + 0.5F * armSwingArc * armCarryBlend;
         float rightArmTy = (bodyTy + 1.4F + (-Mth.cos(Mth.PI / 4.0F + swayPhase) / 2.0F) * walk) * armCarryBlend
-                + (-13.0F) * carry;
+                + (-13.0F + armBodyTy) * carry;
         float leftArmTy = (bodyTy + 1.4F + (Mth.cos(Mth.PI / 4.0F + swayPhase) / 2.0F) * walk) * armCarryBlend
-                + (-13.0F) * carry;
+                + (-13.0F + armBodyTy) * carry;
         float rightArmTz = (bodyTz + Mth.sin(bodyRy) * 5.0F
                 + (0.2F + 0.7F * Mth.sin(Mth.PI / 3.0F + swayPhase) + 0.6F * limbSpeed) * armLift) * armCarryBlend
-                + 1.5F * carry
+                + (1.5F + armBodyTz) * carry
                 + 3.0F * armSwingArc * (1.0F + carry);
         float leftArmTz = (bodyTz - Mth.sin(bodyRy) * 5.0F
                 + (1.5F * idle) * aggroB
                 + (0.2F - 0.7F * Mth.sin(Mth.PI / 3.0F + swayPhase) + 0.6F * limbSpeed) * armLift
                 - 3.0F * armSwingArc) * armCarryBlend
-                + 1.5F * carry;
+                + (1.5F + armBodyTz) * carry;
 
         // right_hand.* / left_hand.*：只有搬运方块（右手公式整条乘了 var.carry）时才有的腕部姿势，
         // 本模型没有手这段子骨骼，叠到手臂上；pivot 略高于 FA 的手，属于可接受的近似
@@ -407,5 +416,90 @@ public final class WandererCemAnimator extends CemAnimator<WandererEntity> {
         // 所以腿不用跟着它动，腿根不会和身体分开。
         setTranslation(rightLeg, bodyTx, rightFootTy, 0.0F);
         setTranslation(leftLeg, bodyTx, leftFootTy, 0.0F);
+
+        // ---------- 眼睛 ----------
+        animateEyes(randomPhase, age, clampedYaw, headPitch, ylook, nov1, aggroB);
+    }
+
+    /**
+     * FA 的眼睛子模型：瞳孔的转动与上下裁剪、眼皮的眨眼与眯眼。
+     *
+     * <p>层级照原文件：眼球 {@code *_eye} 下挂瞳孔链 {@code *_eye_pupil → _in → _do → _up}，
+     * 瞳孔方块挂在 {@code *_eye_pupil_up} 上；眼皮是 {@code *_eyelid → *_blink}（本模型的
+     * {@code *_eyelid} 同时带着眼窝方块）。geo.json 里缺哪根骨骼就跳过对应效果。
+     *
+     * <p>CEM 里 FA 的 {@code right_*} 骨骼在模型的 -x，本模型 -x 的那只眼叫 {@code left_*}，
+     * 所以 {@code left_*} 用 {@code r_*} 那套公式、{@code right_*} 用 {@code l_*} 那套。
+     * 位移按“动画值 - 静止常量”叠加，{@code ctrl_*_pupil} 的静止值是 {@code (∓0.5, 0.5)}。
+     *
+     * <p>没有移植的三处：{@code *_eye_white / *_eye_top} 两根骨骼本模型没有，它们的值在下面当局部变量用；
+     * {@code *_eye.sz = if(varb.distance, 1, 2)} 没做（本模型眼骨骼的 pivot 在脸面上，缩放 z 会把眼窝
+     * 和眼皮片整个推到脸外面去）；{@code *_eyelid.sy/sz} 也没写（这里的 {@code *_eyelid} 是眼窝方块，
+     * 必须保持静止），FA 用眼皮高度表达的“眯眼”改成并进 {@code *_blink} 的覆盖量。
+     */
+    private void animateEyes(float randomPhase, float age, float clampedYaw, float headPitch,
+                             float ylook, float novelty1, float aggroB) {
+        // r_eye_top.ty / l_eye_top.ty（两只眼相同）：上眼睑的下压量，被 head_pitch 与噪声驱动，暴怒时归零
+        float eyeTopTy = (Mth.clamp(2.0F * Mth.clamp(-0.2F - Mth.cos(randomPhase + age / 70.0F) * 2.0F, 0.0F, 1.0F),
+                        0.0F, 0.3F)
+                + Mth.clamp(Mth.sin(randomPhase + age / 38.0F) + Mth.sin(randomPhase + age / 13.0F), -0.2F, 0.2F)
+                        * Mth.clamp(-40.0F - Mth.cos(randomPhase + age / 125.0F) * 60.0F, 0.0F, 1.0F) / 2.0F
+                + rad(headPitch) / 10.0F) * (1.0F - aggroB);
+
+        // ctrl_r_pupil.tx / ty：视线方向（横向还吃 var.hy、var.ylook、var.nov1）
+        float ctrlTx = -0.5F + (-clampedYaw / (80.0F + 80.0F * ylook)
+                + Mth.clamp(Mth.sin(randomPhase + age / 27.0F) + Mth.sin(randomPhase + age / 16.0F), -0.2F, 0.2F)
+                        * Mth.clamp(-40.0F - Mth.cos(randomPhase + age / 125.0F) * 60.0F, 0.0F, 1.0F)
+                        * Mth.clamp(236.0F - Mth.sin(randomPhase + age / 187.0F) * 240.0F, 0.0F, 1.0F)
+                + (-Mth.sin(Mth.PI / 4.0F + randomPhase + age / 10.0F) * 9.0F)
+                        * Mth.clamp(novelty1 * 4.0F, 0.0F, 1.0F)) * (1.0F - aggroB)
+                + Mth.clamp(Mth.cos(age / 3.0F) * 10.0F, -0.1F, 0.1F) * aggroB;
+        float ctrlTy = 0.5F + (Mth.clamp(headPitch / (30.0F + 200.0F * ylook), -0.3F, 0.5F)
+                + (Mth.clamp(Mth.sin(randomPhase + age / 38.0F) + Mth.sin(randomPhase + age / 13.0F), -0.2F, 0.2F)
+                        * Mth.clamp(-40.0F - Mth.cos(randomPhase + age / 125.0F) * 60.0F, 0.0F, 1.0F)
+                        - Mth.clamp(-24.0F + Mth.sin(randomPhase + age / 100.0F) * 40.0F, 0.0F, 1.0F) / 10.0F
+                        + Mth.clamp(2.0F * Mth.clamp(-0.2F - Mth.cos(randomPhase + age / 70.0F) * 2.0F, 0.0F, 1.0F),
+                                0.0F, 0.3F))
+                + (Mth.clamp(rad(clampedYaw) / 8.0F, 0.0F, 0.2F)
+                        + Mth.clamp(-rad(clampedYaw) / 8.0F, 0.0F, 0.2F)) * ylook) * (1.0F - aggroB);
+
+        // r_eye_pupil / l_eye_pupil：瞳孔最终位置，减掉静止值后的偏差正好落在 geo.json 画好的位置上
+        float leftPupilTx = Mth.clamp(ctrlTx, -1.5F, 0.5F) + 0.5F;                     // geo 的 left_* = FA 的 r_*
+        float rightPupilTx = Mth.clamp(ctrlTx + 1.0F, -0.5F, 1.5F) - 0.5F;             // geo 的 right_* = FA 的 l_*
+        float pupilTy = Mth.clamp(ctrlTy, eyeTopTy, 1.0F) - 0.5F;
+        // 上/下眼睑把瞳孔裁在眼白里
+        float pupilUpSy = Mth.clamp(1.0F - (ctrlTy - 0.5F), 0.5F, Mth.clamp(1.0F - eyeTopTy, 0.5F, 1.0F));
+        float pupilDownSy = Mth.clamp(1.0F + (ctrlTy - 0.5F) - eyeTopTy, 0.5F, 1.0F);
+
+        applyPupil("l_eye_pupil", leftPupilTx, pupilTy, pupilUpSy, pupilDownSy);
+        applyPupil("r_eye_pupil", rightPupilTx, pupilTy, pupilUpSy, pupilDownSy);
+
+        // right_blink.sy = left_blink.sy：常态 0（眼皮收在眼上方），眨眼时冲到 1；上眼睑被压下来时也跟着盖住一部分
+        float blink = Mth.clamp((1.5F - Mth.abs(Mth.sin(randomPhase + age / 16.0F) * 12.0F))
+                * Mth.clamp(-32.0F + Mth.cos((randomPhase + age / 16.0F) / 1.5F) * 40.0F
+                        + Mth.cos((randomPhase + age / 16.0F) / 4.0F) * 40.0F, 0.0F, 1.0F),
+                0.0F, 1.0F - aggroB);
+        float lid = Mth.clamp(Math.max(blink, eyeTopTy), 0.0F, 1.0F);
+
+        setLid("left_blink", lid);
+        setLid("right_blink", lid);
+    }
+
+    /** 一条瞳孔链：位移写在 {@code *_eye_pupil} 上，上下裁剪用 {@code _up} / {@code _do} 的 sy。 */
+    private void applyPupil(String pupilName, float tx, float ty, float upSy, float downSy) {
+        GeoBone pupil = bone(pupilName);
+        if (pupil != null) setTranslation(pupil, tx, ty, 0.0F);
+
+        GeoBone clipUp = bone(pupilName + "_up");
+        if (clipUp != null) setScale(clipUp, 1.0F, upSy, 1.0F);
+
+        GeoBone clipDown = bone(pupilName + "_do");
+        if (clipDown != null) setScale(clipDown, 1.0F, downSy, 1.0F);
+    }
+
+    /** 眼皮片：{@code sy} 就是"盖住多少"，0 = 收在眼上方，1 = 完全盖住。 */
+    private void setLid(String name, float amount) {
+        GeoBone lid = bone(name);
+        if (lid != null) setScale(lid, 1.0F, amount, 1.0F);
     }
 }

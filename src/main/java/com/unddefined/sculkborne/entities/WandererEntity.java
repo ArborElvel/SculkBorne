@@ -22,7 +22,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  *
  * <p>骨架与贴图见 {@code assets/sculkborne/geo/entity/wanderer.geo.json} 与
  * {@code assets/sculkborne/textures/entity/wanderer.png}；脸上是异瞳，右眼沿用原版末影人的瞳色、
- * 左眼是 {@code #29DFEB}，由客户端的 {@code WandererEyesLayer} 用自发光贴图覆盖出来；
+ * 左眼是 {@code #29DFEB}，颜色取自主贴图的两格瞳孔像素，再由客户端的 {@code WandererEyesLayer}
+ * 用自发光渲染类型重画瞳孔方块；瞳孔转动、上下裁剪与眨眼见 {@code WandererCemAnimator#animateEyes}；
  * 待机、行走、注视与搬运方块的姿势则是 Fresh Animations 末影人 CEM 动画的移植，
  * 见客户端的 {@code WandererCemAnimator}；
  * 触发振动与干扰传送等专属行为不在这里实现。
