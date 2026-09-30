@@ -39,6 +39,9 @@ public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob 
     /** 生命值低于生命上限的该比例后不再触发绽放。 */
     public static final float NEARBY_DEATH_MIN_HEALTH = 0.18F;
 
+    /** 身边死亡触发的绽放冷却时间，单位游戏刻（2 秒）。 */
+    public static final int NEARBY_DEATH_COOLDOWN_TICKS = 40;
+
     /** 死亡时在原地留下幽匿催发体的概率。 */
     public static final float CATALYST_ON_DEATH_CHANCE = 0.25F;
 
@@ -57,6 +60,8 @@ public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     /** 幽匿系方块上的回血剩余计时（tick），见 {@link SculkMob#tickSculkRegeneration(int)}。 */
     private int sculkHealCooldown;
+    /** 身边死亡绽放的剩余冷却（tick），只由服务端计时，见 {@link #NEARBY_DEATH_COOLDOWN_TICKS}。 */
+    private int nearbyDeathCooldown;
     /** 绽放客户端效果的剩余时间（tick），只由服务端计时。 */
     private int bloomTicks;
 
@@ -107,8 +112,11 @@ public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob 
     public void tick() {
         super.tick();
         // 绽放状态只在服务端计时，客户端读同步值就够了
-        if (!this.level().isClientSide && this.bloomTicks > 0 && --this.bloomTicks == 0) {
-            this.entityData.set(BLOOMING, false);
+        if (!this.level().isClientSide) {
+            if (this.bloomTicks > 0 && --this.bloomTicks == 0) {
+                this.entityData.set(BLOOMING, false);
+            }
+            if (this.nearbyDeathCooldown > 0) --this.nearbyDeathCooldown;
         }
     }
 
@@ -119,6 +127,9 @@ public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob 
      * 死亡位置周围 {@value #NEARBY_DEATH_RADIUS} 格内的每一只存活散播者都会各自触发一次，
      * 各自承担一次 {@link #NEARBY_DEATH_HEALTH_COST} 的生命值消耗。死亡者自身不算“身边”，
      * 所以散播者死亡时不会因为自己触发这条规则。
+     *
+     * <p>每一只散播者各自有 {@value #NEARBY_DEATH_COOLDOWN_TICKS} 刻的冷却，
+     * 冷却中再次收到死亡事件不会绽放、也不会扣血。
      *
      * @param level 死亡所在维度
      * @param dead  死亡的生物，死亡位置取它的坐标
@@ -137,6 +148,8 @@ public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob 
      *
      * <p>生命值低于生命上限的 {@value #NEARBY_DEATH_MIN_HEALTH} 时不再触发，
      * 扣除最多把生命值压到生命上限的 10%，因此这条规则不会让散播者自己死掉。
+     * 触发后进入 {@value #NEARBY_DEATH_COOLDOWN_TICKS} 刻的冷却，
+     * 冷却结束前不会再次绽放。
      * 绽放的电荷取自死亡者的经验（不低于 {@link SculkMob#SCULK_BLOOM_MIN_CHARGE}），
      * 与幽匿生物死亡时的原地绽放共用 {@link SculkBloom}。
      *
@@ -144,11 +157,13 @@ public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob 
      * @param dead  死亡的生物，死亡位置取它的坐标
      */
     private void bloomOnNearbyDeath(ServerLevel level, LivingEntity dead) {
+        if (this.nearbyDeathCooldown > 0) return;
         if (this.getHealth() < this.getMaxHealth() * NEARBY_DEATH_MIN_HEALTH) return;
 
         int charge = Math.max(SCULK_BLOOM_MIN_CHARGE, dead.getExperienceReward(level, dead.getKillCredit()));
         SculkBloom.bloom(level, dead.position(), charge);
         this.startBloomEffect(level);
+        this.nearbyDeathCooldown = NEARBY_DEATH_COOLDOWN_TICKS;
 
         this.setHealth(this.getHealth() - this.getMaxHealth() * NEARBY_DEATH_HEALTH_COST);
     }
