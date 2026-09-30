@@ -1,6 +1,8 @@
 package com.unddefined.sculkborne.client;
 
 import com.unddefined.sculkborne.SculkBorne;
+import com.unddefined.sculkborne.blocks.SculkHeadTypes;
+import com.unddefined.sculkborne.client.model.block.SculkHeadSkullModel;
 import com.unddefined.sculkborne.client.model.anim.CreeperVanillaAnimator;
 import com.unddefined.sculkborne.client.model.anim.EndermanVanillaAnimator;
 import com.unddefined.sculkborne.client.model.anim.EndermiteVanillaAnimator;
@@ -29,6 +31,8 @@ import com.unddefined.sculkborne.server.registry.ParticlesRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -77,6 +81,11 @@ public class SculkBorneClient {
             BlockEntityRenderers.register(BlockEntityRegistry.SCULK_SKELETON_HEAD.get(),
                     context -> new SculkSkeletonHeadRenderer());
 
+            // 戴上头时原版走 SkullBlockRenderer 的贴图表：本模组的头要同时用两张贴图（头 + 触须），
+            // 这里填方块图集，具体取哪张 sprite 由 SculkHeadSkullModel 自己决定
+            SkullBlockRenderer.SKIN_BY_TYPE.put(SculkHeadTypes.SCULK_ZOMBIE, TextureAtlas.LOCATION_BLOCKS);
+            SkullBlockRenderer.SKIN_BY_TYPE.put(SculkHeadTypes.SCULK_SKELETON, TextureAtlas.LOCATION_BLOCKS);
+
             registerVanillaAnimators();
         });
     }
@@ -107,6 +116,13 @@ public class SculkBorneClient {
         event.registerEntityRenderer(EntityRegistry.SCULK_MITE_ENTITY.get(), SculkMiteEntityRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WANDERER_ENTITY.get(), WandererEntityRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WANDER_SHADOW_ENTITY.get(), WanderShadowEntityRenderer::new);
+    }
+
+    /** 戴上幽匿头颅时用的模型：几何照 {@code geo/block} 的头来，所以连触须一起画出来。 */
+    @SubscribeEvent
+    public static void registerSkullModels(EntityRenderersEvent.CreateSkullModels event) {
+        event.registerSkullModel(SculkHeadTypes.SCULK_ZOMBIE, SculkHeadSkullModel.zombie());
+        event.registerSkullModel(SculkHeadTypes.SCULK_SKELETON, SculkHeadSkullModel.skeleton());
     }
 
     @SubscribeEvent

@@ -17,7 +17,7 @@ import net.minecraft.world.level.material.PushReaction;
  */
 public class SculkZombieHeadBlock extends SculkHeadBlock {
     public SculkZombieHeadBlock() {
-        super(Types.ZOMBIE, Properties.of()
+        super(SculkHeadTypes.SCULK_ZOMBIE, Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .instrument(NoteBlockInstrument.ZOMBIE)
                 .strength(1.0F)

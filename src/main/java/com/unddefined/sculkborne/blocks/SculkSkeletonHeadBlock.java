@@ -43,7 +43,7 @@ public class SculkSkeletonHeadBlock extends SculkHeadBlock {
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
 
     public SculkSkeletonHeadBlock() {
-        super(Types.SKELETON, Properties.of()
+        super(SculkHeadTypes.SCULK_SKELETON, Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .instrument(NoteBlockInstrument.SKELETON)
                 .strength(1.0F)
@@ -71,10 +71,8 @@ public class SculkSkeletonHeadBlock extends SculkHeadBlock {
     }
 
     /**
-     * 自然生成的头挖掉后：有几率在原地生成一只幽匿骷髅，没命中则掉一个普通骷髅头。
-     *
-     * <p>父类那次调用照常负责挖掘统计与疲劳，掉落已经被上面的 {@link #getDrops} 清空，所以不会额外
-     * 掉出本方块；和平难度下不生成怪物。
+     * 自然生成的头挖掉后：有几率在原地生成一只幽匿骷髅。
+     * 和平难度下不生成怪物。
      */
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity,

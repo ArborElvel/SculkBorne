@@ -12,6 +12,7 @@ import com.unddefined.sculkborne.entities.SculverfishEntity;
 import com.unddefined.sculkborne.entities.WandererEntity;
 import com.unddefined.sculkborne.server.SculkBloom;
 import com.unddefined.sculkborne.server.SculkIntrusionSpreader;
+import com.unddefined.sculkborne.server.registry.EntityRegistry;
 import com.unddefined.sculkborne.server.registry.ItemRegistry;
 import com.unddefined.sculkborne.server.registry.PotionRegistry;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +20,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.warden.Warden;
@@ -39,6 +43,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
@@ -259,5 +264,27 @@ public class ServerEvents {
 
         if (!event.isCanceled() && entity instanceof ServerPlayer player)
             SculkIntrusionEffect.tryTriggerSpreaderOnHurt(player);
+    }
+
+    /**
+     * 戴上本模组的头时，对应的幽匿生物更不容易发现你，口径同原版「戴同类头」：可见度乘 0.5，
+     * 也就是它们能发现你的距离减半。
+     *
+     * <p>原版那条判定是按原版物品写死的（{@code Items.ZOMBIE_HEAD} 之类），本模组的头是另外的物品，
+     * 所以在原版 {@code LivingEntity#getVisibilityPercent} 之后补上本模组这一份。
+     */
+    @SubscribeEvent
+    public static void onLivingVisibility(LivingEvent.LivingVisibilityEvent event) {
+        Entity lookingEntity = event.getLookingEntity();
+        if (lookingEntity == null) return;
+
+        ItemStack head = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
+        if (head.isEmpty()) return;
+
+        EntityType<?> lookingType = lookingEntity.getType();
+        if (lookingType == EntityRegistry.SCULK_ZOMBIE_ENTITY.get() && head.is(ItemRegistry.SCULK_ZOMBIE_HEAD_ITEM.get())
+                || lookingType == EntityRegistry.SCULK_SKELETON_ENTITY.get() && head.is(ItemRegistry.SCULK_SKELETON_HEAD_ITEM.get())) {
+            event.modifyVisibility(0.5);
+        }
     }
 }
