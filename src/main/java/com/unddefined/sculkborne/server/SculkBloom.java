@@ -32,14 +32,23 @@ public class SculkBloom {
 
     /** 播放一次催发体绽放的粒子与音效 */
     public static void playBloomEffects(ServerLevel level, BlockPos pos) {
-        level.sendParticles(ParticleTypes.SCULK_SOUL,
-                (double) pos.getX() + 0.5,
-                (double) pos.getY() + 1.15,
-                (double) pos.getZ() + 0.5,
-                2, 0.2, 0.0, 0.2, 0.0
-        );
+        playBloomParticles(level, new Vec3((double) pos.getX() + 0.5, (double) pos.getY() + 1.15, (double) pos.getZ() + 0.5));
         level.playSound(null, pos, SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.BLOCKS,
                 2.0F, 0.6F + level.getRandom().nextFloat() * 0.4F);
+    }
+
+    /**
+     * 在任意坐标播放一次催发体绽放的粒子（不含音效）。
+     *
+     * <p>参数与原版催发体绽放一致：每次 2 颗幽匿灵魂粒子，水平随机偏移 0.2。
+     * 方块位置的绽放走 {@link #playBloomEffects(ServerLevel, BlockPos)}（粒子 + 音效），
+     * 散播者这类“动起来的催发体”只在头顶补一组粒子，音效由它触发的方块绽放负责。
+     *
+     * @param level 维度
+     * @param pos   粒子的中心坐标
+     */
+    public static void playBloomParticles(ServerLevel level, Vec3 pos) {
+        level.sendParticles(ParticleTypes.SCULK_SOUL, pos.x, pos.y, pos.z, 2, 0.2, 0.0, 0.2, 0.0);
     }
 
     /** 让 spreader 从指定位置蔓延一刻，与原版催发体每刻做的事一致 */

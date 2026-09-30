@@ -8,6 +8,7 @@ import com.unddefined.sculkborne.effects.TinnitusEffect;
 import com.unddefined.sculkborne.entities.CreesperEntity;
 import com.unddefined.sculkborne.entities.SculkMob;
 import com.unddefined.sculkborne.entities.SculkSkeletonEntity;
+import com.unddefined.sculkborne.entities.SculkSpreaderEntity;
 import com.unddefined.sculkborne.entities.SculverfishEntity;
 import com.unddefined.sculkborne.entities.WandererEntity;
 import com.unddefined.sculkborne.server.SculkBloom;
@@ -116,6 +117,19 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onSculkMobDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof SculkMob sculkMob) sculkMob.triggerSculkBloomOnDeath();
+    }
+
+    /** 散播者身边有生物死亡时，在死亡位置触发一次催发体的效果并消耗自身血量。 */
+    @SubscribeEvent
+    public static void onSculkSpreaderNearbyDeath(LivingDeathEvent event) {
+        if (!(event.getEntity().level() instanceof ServerLevel level)) return;
+        SculkSpreaderEntity.onNearbyEntityDeath(level, event.getEntity());
+    }
+
+    /** 散播者死亡时按概率（受抢夺加成）在原地放置或掉落一个幽匿催发体。 */
+    @SubscribeEvent
+    public static void onSculkSpreaderDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof SculkSpreaderEntity spreader) spreader.leaveCatalystOnDeath(event.getSource());
     }
 
     @SubscribeEvent

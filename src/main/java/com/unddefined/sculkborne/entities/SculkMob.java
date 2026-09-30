@@ -85,7 +85,7 @@ public interface SculkMob {
     int SCULK_BLOOM_MIN_CHARGE = 5;
 
     /** 抢夺附魔每一级提高的掉落概率，与原版 looting 的加成一致（每级 +1%）。 */
-    float LOOTING_CHANCE_PER_LEVEL = 0.01F;
+    float LOOTING_CHANCE_PER_LEVEL = 0.02F;
 
     /** 站在幽匿系方块上时，移动速度与生命上限临时提高的比例（10%）。 */
     float SCULK_BLOCK_BONUS = 0.10F;
@@ -293,11 +293,14 @@ public interface SculkMob {
     /**
      * 取击杀者身上的抢夺附魔等级。
      *
+     * <p>幽匿生物自己的掉落（{@link #dropSculkMobLoot(ServerLevel, DamageSource, Collection)}）
+     * 用它来加成掉落概率，需要按抢夺判定的其它幽匿单位规则可以从这里取同一个等级。
+     *
      * @param level  维度，用于获取附魔注册表
      * @param killer 击杀者，可能为 {@code null}
      * @return 抢夺等级，没有击杀者或击杀者身上没有抢夺附魔时返回 0
      */
-    private static int lootingLevel(ServerLevel level, Entity killer) {
+    static int lootingLevel(ServerLevel level, Entity killer) {
         if (!(killer instanceof LivingEntity living)) return 0;
 
         var looting = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOOTING);
