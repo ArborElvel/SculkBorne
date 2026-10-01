@@ -30,8 +30,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 
 public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob {
-    /** 反应“身边”死亡事件的半径（格），与原版催发体的监听半径一致。 */
-    public static final double NEARBY_DEATH_RADIUS = 8.0;
+    /** 反应“身边”死亡事件的半径（格）。 */
+    public static final double NEARBY_DEATH_RADIUS = 12.0;
 
     /** 每次触发绽放按生命上限扣除的生命值比例。 */
     public static final float NEARBY_DEATH_HEALTH_COST = 0.05F;
@@ -51,7 +51,7 @@ public class SculkSpreaderEntity extends Monster implements GeoEntity, SculkMob 
      * <p>取的是 {@code sculk_spreader_bloom.png} 一整个循环的长度：14 帧 × frametime 8。
      * 换贴图或改动画帧数/帧时长时需要同步调整这里。
      */
-    public static final int BLOOM_TICKS = 14 * 8;
+    public static final int BLOOM_TICKS = 14;
 
     /** 是否正在播放绽放客户端效果，由服务端同步给客户端，见 {@link #isBlooming()}。 */
     private static final EntityDataAccessor<Boolean> BLOOMING =
