@@ -2,6 +2,7 @@ package com.unddefined.sculkborne;
 
 import com.mojang.logging.LogUtils;
 import com.unddefined.sculkborne.client.ModSoundEvents;
+import com.unddefined.sculkborne.compat.enderechoing.EnderEchoingCompat;
 import com.unddefined.sculkborne.entities.CreesperEntity;
 import com.unddefined.sculkborne.entities.SculkMiteEntity;
 import com.unddefined.sculkborne.entities.SculkShadeEntity;
@@ -38,6 +39,7 @@ public class SculkBorne {
 
     public SculkBorne(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        EnderEchoingCompat.registerIfPresent();
         BlockRegistry.BLOCKS.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
